@@ -11,5 +11,5 @@ This is my summary for computational physics cource which was taken in spring se
 - Complex Function
 - Mathematical Physics Equation
 ## Contect Me
-If you have any question or any advise about my summary, you can contect me by **e-mail**. I will help you as soon as possible.
+If you have any question or any advise about this repository, you can contect me by **e-mail**. I will help you as soon as possible.
 Here is my e-mail address: **liangxm15@lzu.edu.cn**
