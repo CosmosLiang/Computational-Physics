@@ -1,0 +1,1933 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 7.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[     84634,       1924]
+NotebookOptionsPosition[     79645,       1761]
+NotebookOutlinePosition[     81253,       1815]
+CellTagsIndexPosition[     80968,       1804]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Numerov Solutions for Single- and Double-Well Potentials", "DemoTitle",
+ CellChangeTimes->{
+  3.35332394657587*^9, {3.38126871925653*^9, 3.38126877592682*^9}, {
+   3.44776550896318*^9, 3.447765520847974*^9}, 3.44883255687113*^9, {
+   3.4488403375548763`*^9, 3.448840387126555*^9}, 3.448969461981412*^9},
+ CellID->700863240],
+
+Cell[CellGroupData[{
+
+Cell["", "InitializationSection"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"numerov", "[", 
+   RowBox[{
+   "xmin_", ",", "xmax_", ",", "mass_", ",", "energy_", ",", "step_", ",", 
+    "psiscale_", ",", "energyscale_"}], "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "nsteps", ",", "psim", ",", "x", ",", "G", ",", "Gn", ",", "Gp", ",", 
+      "\[HBar]", ",", "Gm", ",", "s2", ",", "psin", ",", "xn", ",", "xp", ",",
+       "xm", ",", "n", ",", "psi", ",", "psip"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"nsteps", "=", 
+      RowBox[{"Floor", "[", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"xmax", "-", "xmin"}], ")"}], "/", "step"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"psi", "=", 
+      RowBox[{"{", 
+       RowBox[{"0.000001", ",", "0.00001"}], "}"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"x", "=", 
+      RowBox[{"{", 
+       RowBox[{"xmin", ",", 
+        RowBox[{"xmin", "+", "step"}]}], "}"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Do", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"psim", "=", 
+         RowBox[{"psi", "[", 
+          RowBox[{"[", 
+           RowBox[{"n", "-", "1"}], "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"psin", "=", 
+         RowBox[{"psi", "[", 
+          RowBox[{"[", "n", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"xm", "=", 
+         RowBox[{"x", "[", 
+          RowBox[{"[", 
+           RowBox[{"n", "-", "1"}], "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"xn", "=", 
+         RowBox[{"x", "[", 
+          RowBox[{"[", "n", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"xp", "=", 
+         RowBox[{"xn", "+", "step"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"x", "=", 
+         RowBox[{"Append", "[", 
+          RowBox[{"x", ",", "xp"}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"Gn", "=", 
+         RowBox[{"2", " ", "mass", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"VV", "[", "xn", "]"}], "-", "energy"}], ")"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Gp", "=", 
+         RowBox[{"2", " ", "mass", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"VV", "[", "xp", "]"}], "-", "energy"}], ")"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Gm", "=", 
+         RowBox[{"2", " ", "mass", " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"VV", "[", "xm", "]"}], "-", "energy"}], ")"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"s2", "=", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"step", "^", "2"}], ")"}], "/", "12."}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"psip", "=", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"2.", " ", "psin"}], "-", "psim", "+", 
+            RowBox[{
+             RowBox[{"(", "s2", ")"}], 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"10.", " ", "Gn", " ", "psin"}], "+", 
+               RowBox[{"Gm", " ", "psim"}]}], ")"}]}]}], ")"}], "/", 
+          RowBox[{"(", 
+           RowBox[{"1.", "-", 
+            RowBox[{"s2", " ", "Gp"}]}], ")"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"psi", "=", 
+         RowBox[{"Append", "[", 
+          RowBox[{"psi", ",", "psip"}], "]"}]}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"n", ",", "2", ",", "nsteps"}], "}"}]}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"psi", "=", 
+      RowBox[{
+       RowBox[{"psiscale", " ", 
+        RowBox[{"psi", "/", 
+         RowBox[{"Max", "[", 
+          RowBox[{"Abs", "[", "psi", "]"}], "]"}]}]}], "+", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"energy", "*", "energyscale"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"Length", "[", "psi", "]"}], "}"}]}], "]"}]}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Transpose", "[", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", "psi"}], "}"}], "]"}]}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.35092666999086*^9, 3.35092667071099*^9}, {
+   3.35092672149832*^9, 3.35092694953367*^9}, {3.35092698298204*^9, 
+   3.35092702667317*^9}, {3.35092712078971*^9, 3.35092716104868*^9}, {
+   3.35092724846803*^9, 3.35092726708198*^9}, {3.35092732678105*^9, 
+   3.35092732721442*^9}, 3.35092738038621*^9, {3.35092748011684*^9, 
+   3.35092749409689*^9}, {3.35092752916099*^9, 3.350927533107*^9}, 
+   3.35092758945807*^9, {3.35092906050555*^9, 3.35092908667393*^9}, {
+   3.3509291746306*^9, 3.35092920394365*^9}, {3.35092937667745*^9, 
+   3.35092939611456*^9}, {3.35092960021951*^9, 3.35092960357359*^9}, {
+   3.35092974814*^9, 3.35092975196184*^9}, {3.35093001574458*^9, 
+   3.35093013369625*^9}, {3.35093028336249*^9, 3.35093028484376*^9}, {
+   3.35093034380298*^9, 3.35093035297765*^9}, 3.35093054095865*^9, {
+   3.35093102382172*^9, 3.35093103351868*^9}, {3.35093119196225*^9, 
+   3.35093119520379*^9}, 3.35093172316084*^9, 3.35093176172175*^9, {
+   3.35098914939429*^9, 3.35098928619145*^9}, {3.35098936800097*^9, 
+   3.35098945308198*^9}, {3.3509894867691*^9, 3.35098950570827*^9}, {
+   3.35098955306041*^9, 3.35098958312181*^9}, {3.35722558428125*^9, 
+   3.35722559946875*^9}, {3.35824688923346*^9, 3.35824689715958*^9}, {
+   3.36434521626613*^9, 3.36434523473488*^9}, {3.36434528429738*^9, 
+   3.36434531665675*^9}, {3.36434538053175*^9, 3.36434538060988*^9}, {
+   3.3647502423246*^9, 3.36475025644942*^9}, {3.36483557907852*^9, 
+   3.36483565883649*^9}, {3.36483570894105*^9, 3.36483571429991*^9}, {
+   3.36559724757968*^9, 3.36559725126718*^9}, {3.36924279801563*^9, 
+   3.36924280432813*^9}, {3.37054147034375*^9, 3.370541564484375*^9}, {
+   3.374880766359375*^9, 3.374880771*^9}, {3.3779800659189253`*^9, 
+   3.3779800685595503`*^9}, {3.4477656538172398`*^9, 3.447765840507992*^9}, {
+   3.447766216556632*^9, 3.447766348574711*^9}, {3.4477664331226892`*^9, 
+   3.447766433435206*^9}, {3.447766464237512*^9, 3.4477664644863243`*^9}, {
+   3.447766531102708*^9, 3.447766531498322*^9}, {3.4488316370996184`*^9, 
+   3.4488316545528555`*^9}, {3.448836167278571*^9, 3.4488361995287776`*^9}, {
+   3.448836425483349*^9, 3.448836428577119*^9}},
+ CellID->24470059],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Example1", "[", "energy_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"plot1", ",", "plot2", ",", "psiscale", ",", "energyscale"}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"VV", "[", "x_", "]"}], ":=", 
+       RowBox[{
+        RowBox[{"x", "^", "2"}], "/", "2"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"psiscale", " ", "=", " ", "3"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"energyscale", " ", "=", " ", "1"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"plot1", "=", 
+       RowBox[{"Plot", "[", 
+        RowBox[{
+         RowBox[{"VV", "[", "x", "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"x", ",", 
+           RowBox[{"-", "5"}], ",", "5"}], "}"}], ",", 
+         RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+         RowBox[{"PlotRange", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "2"}], ",", "10"}], "}"}]}], ",", 
+         RowBox[{"LabelStyle", "\[Rule]", "14"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"AxesLabel", "\[Rule]", " ", 
+          RowBox[{"{", 
+           RowBox[{"x", ",", 
+            RowBox[{"Row", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"V", "[", "x", "]"}], ",", "\"\< / \>\"", ",", 
+               "\"\<\[HBar]\[Omega]\>\""}], "}"}], "]"}]}], "}"}]}]}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"plot2", " ", "=", " ", 
+       RowBox[{"ListPlot", "[", 
+        RowBox[{
+         RowBox[{"numerov", "[", 
+          RowBox[{
+           RowBox[{"-", "5"}], ",", "5", ",", "1", ",", "energy", ",", "0.01",
+            ",", "psiscale", ",", "energyscale"}], "]"}], ",", 
+         RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
+         RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+         RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"PlotStyle", "\[Rule]", " ", "Thick"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Epilog", "\[Rule]", " ", 
+          RowBox[{"{", 
+           RowBox[{"Text", "[", 
+            RowBox[{
+            "\"\<E = \>\"", ",", "energy", ",", "\"\<\[HBar]\[Omega]\>\"", 
+             ",", 
+             RowBox[{"{", 
+              RowBox[{"1", ",", "8"}], "}"}]}], "]"}], "}"}]}]}], "]"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{"Show", "[", 
+       RowBox[{"plot1", ",", "plot2"}], "]"}]}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.35092666999086*^9, 3.35092667071099*^9}, {
+   3.35092672149832*^9, 3.35092694953367*^9}, {3.35092698298204*^9, 
+   3.35092702667317*^9}, {3.35092712078971*^9, 3.35092716104868*^9}, {
+   3.35092724846803*^9, 3.35092726708198*^9}, {3.35092732678105*^9, 
+   3.35092732721442*^9}, 3.35092738038621*^9, {3.35092748011684*^9, 
+   3.35092749409689*^9}, {3.35092752916099*^9, 3.350927533107*^9}, 
+   3.35092758945807*^9, {3.35092906050555*^9, 3.35092908667393*^9}, {
+   3.3509291746306*^9, 3.35092920394365*^9}, {3.35092937667745*^9, 
+   3.35092939611456*^9}, {3.35092960021951*^9, 3.35092960357359*^9}, {
+   3.35092974814*^9, 3.35092975196184*^9}, {3.35093001574458*^9, 
+   3.35093013369625*^9}, {3.35093028336249*^9, 3.35093028484376*^9}, {
+   3.35093034380298*^9, 3.35093035297765*^9}, 3.35093054095865*^9, {
+   3.35093102382172*^9, 3.35093103351868*^9}, {3.35093119196225*^9, 
+   3.35093119520379*^9}, 3.35093172316084*^9, 3.35093176172175*^9, {
+   3.35098914939429*^9, 3.35098928619145*^9}, {3.35098936800097*^9, 
+   3.35098945308198*^9}, {3.3509894867691*^9, 3.35098950570827*^9}, {
+   3.35098955306041*^9, 3.35098958312181*^9}, {3.35722558428125*^9, 
+   3.35722559946875*^9}, {3.35824688923346*^9, 3.35824689715958*^9}, {
+   3.36434521626613*^9, 3.36434523473488*^9}, {3.36434528429738*^9, 
+   3.36434531665675*^9}, {3.36434538053175*^9, 3.36434538060988*^9}, {
+   3.3647502423246*^9, 3.36475025644942*^9}, {3.36483557907852*^9, 
+   3.36483565883649*^9}, {3.36483570894105*^9, 3.36483571429991*^9}, {
+   3.36559724757968*^9, 3.36559725126718*^9}, {3.36924279801563*^9, 
+   3.36924280432813*^9}, {3.37054147034375*^9, 3.370541564484375*^9}, {
+   3.374880766359375*^9, 3.374880771*^9}, {3.3779800659189253`*^9, 
+   3.3779800685595503`*^9}, {3.4477656538172398`*^9, 3.447765840507992*^9}, {
+   3.447766216556632*^9, 3.447766348574711*^9}, {3.4477664331226892`*^9, 
+   3.447766433435206*^9}, {3.447766464237512*^9, 3.4477664644863243`*^9}, {
+   3.447766531102708*^9, 3.447766531498322*^9}, {3.4488316370996184`*^9, 
+   3.448831668912322*^9}, {3.448836209106964*^9, 3.4488362556228867`*^9}, {
+   3.4488362882012205`*^9, 3.4488362995137925`*^9}, 3.4488365142182913`*^9, {
+   3.4488365928906703`*^9, 3.4488365939063015`*^9}},
+ CellID->144276704],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Example2", "[", "energy_", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "en", ",", "plot1", ",", "plot2", ",", "exact", ",", "cmm", ",", 
+      "psiscale", ",", "energyscale"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"VV", "[", "x_", "]"}], ":=", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "0.004"}], 
+        RowBox[{"x", "^", "2"}]}], " ", "+", " ", 
+       RowBox[{"0.002", " ", 
+        SuperscriptBox["x", "4"]}]}]}], " ", ";", "\[IndentingNewLine]", 
+     RowBox[{"cmm", " ", "=", " ", 
+      RowBox[{"27.2", "*", "8065.48"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"exact", " ", "=", " ", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.0008551752250662832`"}], ",", 
+         RowBox[{"-", "0.0006239612460331329`"}]}], "}"}], "*", "cmm"}]}], 
+     ";", "\[IndentingNewLine]", 
+     RowBox[{"psiscale", " ", "=", " ", "100"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"energyscale", " ", "=", " ", "cmm"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"en", " ", "=", " ", 
+      RowBox[{"energy", "/", "cmm"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"plot1", "=", 
+      RowBox[{"Plot", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"VV", "[", "x", "]"}], "cmm"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", 
+          RowBox[{"-", "2.3"}], ",", "2.3"}], "}"}], ",", 
+        RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+        RowBox[{"PlotRange", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "500"}], ",", "1"}], "}"}]}], ",", 
+        RowBox[{"LabelStyle", "\[Rule]", "14"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"AxesLabel", "\[Rule]", " ", 
+         RowBox[{"{", 
+          RowBox[{"x", ",", 
+           RowBox[{"Row", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"V", "[", "x", "]"}], ",", "\"\< / \>\"", ",", 
+              "\"\<\[HBar]\[Omega]\>\""}], "}"}], "]"}]}], "}"}]}]}], "]"}]}],
+      ";", "\[IndentingNewLine]", 
+     RowBox[{"plot2", " ", "=", " ", 
+      RowBox[{"ListPlot", "[", 
+       RowBox[{
+        RowBox[{"numerov", "[", 
+         RowBox[{
+          RowBox[{"-", "2.3"}], ",", "2.3", ",", "2000", ",", "en", ",", 
+          "0.01", ",", "psiscale", ",", "energyscale"}], "]"}], ",", 
+        RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
+        RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+        RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"PlotStyle", "\[Rule]", " ", "Thick"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Show", "[", 
+      RowBox[{"plot1", ",", "plot2", ",", "\[IndentingNewLine]", 
+       RowBox[{"Epilog", "\[Rule]", " ", 
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Line", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "2.1"}], ",", 
+               RowBox[{"exact", "[", 
+                RowBox[{"[", "1", "]"}], "]"}]}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"+", "2.1"}], ",", 
+               RowBox[{"exact", "[", 
+                RowBox[{"[", "1", "]"}], "]"}]}], "}"}]}], "}"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Line", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "2.1"}], ",", 
+               RowBox[{"exact", "[", 
+                RowBox[{"[", "2", "]"}], "]"}]}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"+", "2.1"}], ",", 
+               RowBox[{"exact", "[", 
+                RowBox[{"[", "2", "]"}], "]"}]}], "}"}]}], "}"}], "]"}]}], 
+         "\[IndentingNewLine]", "}"}]}]}], "]"}]}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.35092666999086*^9, 3.35092667071099*^9}, {
+   3.35092672149832*^9, 3.35092694953367*^9}, {3.35092698298204*^9, 
+   3.35092702667317*^9}, {3.35092712078971*^9, 3.35092716104868*^9}, {
+   3.35092724846803*^9, 3.35092726708198*^9}, {3.35092732678105*^9, 
+   3.35092732721442*^9}, 3.35092738038621*^9, {3.35092748011684*^9, 
+   3.35092749409689*^9}, {3.35092752916099*^9, 3.350927533107*^9}, 
+   3.35092758945807*^9, {3.35092906050555*^9, 3.35092908667393*^9}, {
+   3.3509291746306*^9, 3.35092920394365*^9}, {3.35092937667745*^9, 
+   3.35092939611456*^9}, {3.35092960021951*^9, 3.35092960357359*^9}, {
+   3.35092974814*^9, 3.35092975196184*^9}, {3.35093001574458*^9, 
+   3.35093013369625*^9}, {3.35093028336249*^9, 3.35093028484376*^9}, {
+   3.35093034380298*^9, 3.35093035297765*^9}, 3.35093054095865*^9, {
+   3.35093102382172*^9, 3.35093103351868*^9}, {3.35093119196225*^9, 
+   3.35093119520379*^9}, 3.35093172316084*^9, 3.35093176172175*^9, {
+   3.35098914939429*^9, 3.35098928619145*^9}, {3.35098936800097*^9, 
+   3.35098945308198*^9}, {3.3509894867691*^9, 3.35098950570827*^9}, {
+   3.35098955306041*^9, 3.35098958312181*^9}, {3.35722558428125*^9, 
+   3.35722559946875*^9}, {3.35824688923346*^9, 3.35824689715958*^9}, {
+   3.36434521626613*^9, 3.36434523473488*^9}, {3.36434528429738*^9, 
+   3.36434531665675*^9}, {3.36434538053175*^9, 3.36434538060988*^9}, {
+   3.3647502423246*^9, 3.36475025644942*^9}, {3.36483557907852*^9, 
+   3.36483565883649*^9}, {3.36483570894105*^9, 3.36483571429991*^9}, {
+   3.36559724757968*^9, 3.36559725126718*^9}, {3.36924279801563*^9, 
+   3.36924280432813*^9}, {3.37054147034375*^9, 3.370541564484375*^9}, {
+   3.374880766359375*^9, 3.374880771*^9}, {3.3779800659189253`*^9, 
+   3.3779800685595503`*^9}, {3.4477656538172398`*^9, 3.447765840507992*^9}, {
+   3.447766216556632*^9, 3.447766348574711*^9}, {3.4477664331226892`*^9, 
+   3.447766433435206*^9}, {3.447766464237512*^9, 3.4477664644863243`*^9}, {
+   3.447766531102708*^9, 3.447766531498322*^9}, {3.4488316370996184`*^9, 
+   3.448831705350055*^9}, {3.448832563730549*^9, 3.448832571855601*^9}, {
+   3.4488363230608187`*^9, 3.448836324748329*^9}, {3.448836367545478*^9, 
+   3.448836387701857*^9}, 3.448836457702305*^9, {3.448836526296494*^9, 
+   3.448836527374626*^9}, {3.448840775656061*^9, 3.44884079178911*^9}, 
+   3.448840983819127*^9},
+ CellID->222216568]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["", "ManipulateSection"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Switch", "[", "\[IndentingNewLine]", 
+    RowBox[{"example", ",", "\[IndentingNewLine]", "1", ",", 
+     RowBox[{"Example1", "[", 
+      RowBox[{"0.4", "+", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"9.5", "-", "0.4"}], ")"}], "energy"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", "2", ",", 
+     RowBox[{"Example2", "[", 
+      RowBox[{
+       RowBox[{"-", "50"}], "+", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"-", "200"}], "+", "50"}], ")"}], "energy"}]}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"energy", ",", ".1", ",", "\"\<energy (\[HBar]\[Omega])\>\""}], 
+      "}"}], ",", "0", ",", "1"}], "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"example", ",", 
+     RowBox[{"{", 
+      RowBox[{"1", ",", "2"}], "}"}]}], "}"}], ",", 
+   RowBox[{"SaveDefinitions", "\[Rule]", " ", "True"}]}], "]"}]], "Input",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.447766387740799*^9, 3.447766389181534*^9}, {
+   3.447766451143003*^9, 3.4477664532131777`*^9}, {3.448726694756133*^9, 
+   3.448726701308272*^9}, {3.448831733772112*^9, 3.4488317914756064`*^9}, {
+   3.448831851772867*^9, 3.448831904523205*^9}, {3.4488320784930687`*^9, 
+   3.4488322408534822`*^9}, {3.448832650746731*^9, 3.448832753231762*^9}, {
+   3.4488363116701202`*^9, 3.4488363460140905`*^9}, {3.4488365075932493`*^9, 
+   3.448836520655833*^9}},
+ CellID->271187980],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`energy$$ = 0.1, $CellContext`example$$ = 1, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`energy$$], 0.1, "energy (\[HBar]\[Omega])"}, 0, 1}, {
+      Hold[$CellContext`example$$], {1, 2}}}, Typeset`size$$ = {
+    360., {186., 190.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = False, $CellContext`energy$4273$$ = 
+    0, $CellContext`example$4274$$ = False}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`energy$$ = 0.1, $CellContext`example$$ = 
+        1}, "ControllerVariables" :> {
+        Hold[$CellContext`energy$$, $CellContext`energy$4273$$, 0], 
+        Hold[$CellContext`example$$, $CellContext`example$4274$$, False]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Switch[$CellContext`example$$, 1, 
+        $CellContext`Example1[0.4 + (9.5 - 0.4) $CellContext`energy$$], 2, 
+        $CellContext`Example2[-50 + (-200 + 50) $CellContext`energy$$]], 
+      "Specifications" :> {{{$CellContext`energy$$, 0.1, 
+          "energy (\[HBar]\[Omega])"}, 0, 1}, {$CellContext`example$$, {1, 
+         2}}}, "Options" :> {}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{407., {243., 248.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    Initialization:>({$CellContext`Example1[
+         Pattern[$CellContext`energy, 
+          Blank[]]] := 
+       Module[{$CellContext`plot1, $CellContext`plot2, $CellContext`psiscale, \
+$CellContext`energyscale}, $CellContext`VV[
+            Pattern[$CellContext`x, 
+             Blank[]]] := $CellContext`x^2/2; $CellContext`psiscale = 
+          3; $CellContext`energyscale = 1; $CellContext`plot1 = Plot[
+            $CellContext`VV[$CellContext`x], {$CellContext`x, -5, 5}, 
+            AspectRatio -> 1, PlotRange -> {-2, 10}, LabelStyle -> 14, 
+            AxesLabel -> {$CellContext`x, 
+              Row[{
+                $CellContext`V[$CellContext`x], " / ", 
+                "\[HBar]\[Omega]"}]}]; $CellContext`plot2 = ListPlot[
+            $CellContext`numerov[-5, 5, 1, $CellContext`energy, 
+             0.01, $CellContext`psiscale, $CellContext`energyscale], 
+            PlotRange -> All, Joined -> True, AspectRatio -> 1, PlotStyle -> 
+            Thick, Epilog -> {
+              Text["E = ", $CellContext`energy, "\[HBar]\[Omega]", {1, 8}]}]; 
+         Show[$CellContext`plot1, $CellContext`plot2]], $CellContext`VV[
+         Pattern[$CellContext`x, 
+          Blank[]]] := (-0.004) $CellContext`x^2 + 0.002 $CellContext`x^4, 
+       Attributes[PlotRange] = {ReadProtected}, $CellContext`numerov[
+         Pattern[$CellContext`xmin, 
+          Blank[]], 
+         Pattern[$CellContext`xmax, 
+          Blank[]], 
+         Pattern[$CellContext`mass, 
+          Blank[]], 
+         Pattern[$CellContext`energy, 
+          Blank[]], 
+         Pattern[$CellContext`step, 
+          Blank[]], 
+         Pattern[$CellContext`psiscale, 
+          Blank[]], 
+         Pattern[$CellContext`energyscale, 
+          Blank[]]] := 
+       Module[{$CellContext`nsteps, $CellContext`psim, $CellContext`x, \
+$CellContext`G, $CellContext`Gn, $CellContext`Gp, $CellContext`\[HBar], \
+$CellContext`Gm, $CellContext`s2, $CellContext`psin, $CellContext`xn, \
+$CellContext`xp, $CellContext`xm, $CellContext`n, $CellContext`psi, \
+$CellContext`psip}, $CellContext`nsteps = 
+          Floor[($CellContext`xmax - $CellContext`xmin)/$CellContext`step]; \
+$CellContext`psi = {1.*^-6, 
+           
+           0.00001}; $CellContext`x = {$CellContext`xmin, $CellContext`xmin + \
+$CellContext`step}; 
+         Do[$CellContext`psim = 
+            Part[$CellContext`psi, $CellContext`n - 1]; $CellContext`psin = 
+            Part[$CellContext`psi, $CellContext`n]; $CellContext`xm = 
+            Part[$CellContext`x, $CellContext`n - 1]; $CellContext`xn = 
+            Part[$CellContext`x, $CellContext`n]; $CellContext`xp = \
+$CellContext`xn + $CellContext`step; $CellContext`x = 
+            Append[$CellContext`x, $CellContext`xp]; $CellContext`Gn = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xn] - \
+$CellContext`energy); $CellContext`Gp = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xp] - \
+$CellContext`energy); $CellContext`Gm = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xm] - \
+$CellContext`energy); $CellContext`s2 = $CellContext`step^2/
+             12.; $CellContext`psip = (
+              2. $CellContext`psin - $CellContext`psim + $CellContext`s2 ((
+                  10. $CellContext`Gn) $CellContext`psin + $CellContext`Gm \
+$CellContext`psim))/(1. - $CellContext`s2 $CellContext`Gp); $CellContext`psi = 
+            Append[$CellContext`psi, $CellContext`psip], {$CellContext`n, 
+            2, $CellContext`nsteps}]; $CellContext`psi = \
+$CellContext`psiscale ($CellContext`psi/Max[
+              Abs[$CellContext`psi]]) + 
+           Table[$CellContext`energy $CellContext`energyscale, {
+              Length[$CellContext`psi]}]; 
+         Transpose[{$CellContext`x, $CellContext`psi}]], $CellContext`Example2[
+         Pattern[$CellContext`energy, 
+          Blank[]]] := 
+       Module[{$CellContext`en, $CellContext`plot1, $CellContext`plot2, \
+$CellContext`exact, $CellContext`cmm, $CellContext`psiscale, \
+$CellContext`energyscale}, $CellContext`VV[
+            Pattern[$CellContext`x, 
+             Blank[]]] := (-0.004) $CellContext`x^2 + 
+           0.002 $CellContext`x^4; $CellContext`cmm = 
+          27.2 8065.48; $CellContext`exact = {-0.0008551752250662832, \
+-0.0006239612460331329} $CellContext`cmm; $CellContext`psiscale = 
+          
+          100; $CellContext`energyscale = $CellContext`cmm; $CellContext`en = \
+$CellContext`energy/$CellContext`cmm; $CellContext`plot1 = 
+          Plot[$CellContext`VV[$CellContext`x] $CellContext`cmm, \
+{$CellContext`x, -2.3, 2.3}, AspectRatio -> 1, PlotRange -> {-500, 1}, 
+            LabelStyle -> 14, AxesLabel -> {$CellContext`x, 
+              Row[{
+                $CellContext`V[$CellContext`x], " / ", 
+                "\[HBar]\[Omega]"}]}]; $CellContext`plot2 = ListPlot[
+            $CellContext`numerov[-2.3, 2.3, 2000, $CellContext`en, 
+             0.01, $CellContext`psiscale, $CellContext`energyscale], 
+            PlotRange -> All, Joined -> True, AspectRatio -> 1, PlotStyle -> 
+            Thick]; Show[$CellContext`plot1, $CellContext`plot2, Epilog -> {
+             Line[{{-2.1, 
+                Part[$CellContext`exact, 1]}, {
+                Plus[2.1], 
+                Part[$CellContext`exact, 1]}}], 
+             Line[{{-2.1, 
+                Part[$CellContext`exact, 2]}, {
+                Plus[2.1], 
+                Part[$CellContext`exact, 2]}}]}]]}; Typeset`initDone$$ = True),
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.35696210375764*^9, 3.448840816598619*^9, 
+  3.448840866027718*^9, 3.448841006154537*^9, 3.448843289960088*^9},
+ CellID->384190274]
+}, {2}]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "ManipulateCaptionSection"],
+
+Cell["\<\
+In quantum mechanics, energy states of a one-particle system are given by \
+solutions of the time-independent Schr\[ODoubleDot]dinger equation\
+\>", "ManipulateCaption",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.447767354312048*^9, 3.44776741013658*^9}, {
+   3.448839637024787*^9, 3.44883964233646*^9}},
+ CellID->257893600],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", 
+         FractionBox[
+          SuperscriptBox["\[HBar]", "2"], 
+          RowBox[{"2", "m"}]]}], 
+        FractionBox["d", 
+         RowBox[{"d", " ", "x"}]]}], "+", " ", 
+       RowBox[{"V", "(", "x", ")"}]}], ")"}], 
+     RowBox[{"\[Psi]", "(", "x", ")"}]}], " ", "=", " ", 
+    RowBox[{"E", " ", 
+     RowBox[{"\[Psi]", "(", "x", ")"}]}]}], TraditionalForm]], "InlineMath"],
+ ","
+}], "ManipulateCaption",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.447767417386115*^9, 3.447767464505621*^9}, 
+   3.448832510605209*^9, {3.448839628750907*^9, 3.448839628751017*^9}},
+ CellID->795735554],
+
+Cell[TextData[{
+ "where ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"V", 
+    RowBox[{"(", "x", ")"}]}], TraditionalForm]], "InlineMath"],
+ " is the potential energy and ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"\[Psi]", 
+    RowBox[{"(", "x", ")"}]}], TraditionalForm]], "InlineMath"],
+ " is an energy eigenfunction. In principle, one can always find a ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"\[Psi]", 
+    RowBox[{"(", "x", ")"}]}], TraditionalForm]], "InlineMath"],
+ " which satisfies this equation, however, not all ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"\[Psi]", 
+    RowBox[{"(", "x", ")"}]}], TraditionalForm]], "InlineMath"],
+ " are valid solutions since the boundary conditions must also be satisfied. \
+In fact, it is imposition of the boundary conditions on ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"\[Psi]", 
+    RowBox[{"(", "x", ")"}]}], TraditionalForm]], "InlineMath"],
+ " which gives rise to a discrete spectrum of energy states (for a bound \
+system). In the examples here, we use the ",
+ ButtonBox["Numerov approach",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://en.wikipedia.org/wiki/Numerov%27s_method"], None},
+  ButtonNote->"http://en.wikipedia.org/wiki/Numerov%27s_method"],
+ " to generate solutions of the time-independent Schr\[ODoubleDot]dinger \
+equation for bound systems. In the examples here, ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"V", 
+     RowBox[{"(", "x", ")"}]}], "\[Rule]", "\[Infinity]"}], TraditionalForm]],
+   "InlineMath"],
+ " as ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"x", "\[Rule]", 
+    RowBox[{"\[PlusMinus]", "\[Infinity]"}]}], TraditionalForm]], 
+  "InlineMath"],
+ ", thus ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"\[Psi]", 
+    RowBox[{"(", "x", ")"}]}], TraditionalForm]], "InlineMath"],
+ " must vanish as ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"|", "x", "|"}], TraditionalForm]], "InlineMath"],
+ " becomes large. As shown here, only certain energies will give rise to \
+solutions that satisfy this condition. The Numerov solution will always \
+diverge as ",
+ Cell[BoxData[
+  FormBox["x", TraditionalForm]], "InlineMath",
+  FormatType->"TraditionalForm"],
+ " becomes large; however, by carefully adjusting the energy until it is very \
+close to the exact eigenvalue, the point of divergence can be pushed to \
+greater and greater values of ",
+ Cell[BoxData[
+  FormBox["x", TraditionalForm]], "InlineMath"],
+ ". "
+}], "ManipulateCaption",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.4477674697859907`*^9, 3.447767772143132*^9}, {
+   3.447768161840838*^9, 3.447768161984466*^9}, {3.447768357552453*^9, 
+   3.447768462047*^9}, {3.447768498465899*^9, 3.447768547517096*^9}, {
+   3.447768928922703*^9, 3.4477689289246187`*^9}, {3.4488325165896225`*^9, 
+   3.4488325660430636`*^9}, {3.448835050407239*^9, 3.448835098939731*^9}, {
+   3.4488396621448593`*^9, 3.448839724054384*^9}, {3.448969487528124*^9, 
+   3.4489694984811783`*^9}},
+ CellID->1220339635],
+
+Cell[TextData[{
+ "In the first example, we consider a particle in a harmonic potential ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"V", "(", "x", ")"}], " ", "=", " ", 
+    RowBox[{"m", " ", 
+     SuperscriptBox["\[Omega]", "2"], " ", 
+     RowBox[{
+      SuperscriptBox["x", "2"], "/", "2"}]}]}], TraditionalForm]], 
+  "InlineMath"],
+ ". With energy units such that ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"\[HBar]", "=", 
+    RowBox[{"m", " ", "=", " ", 
+     RowBox[{"\[Omega]", "=", "1"}]}]}], TraditionalForm]], "InlineMath"],
+ ", the exact energy eigenvalues are at ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["E", "n"], "=", " ", 
+    RowBox[{"n", "+", 
+     FractionBox["1", "2"]}]}], TraditionalForm]], "InlineMath"],
+ ". Using the slider, one can scan the energy and find that at only for these \
+discrete values will the computed solutions obey the boundary conditions. "
+}], "ManipulateCaption",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.447767772464143*^9, 3.44776800480886*^9}, {
+   3.448832547792947*^9, 3.448832566699318*^9}, 3.4488351325030904`*^9, {
+   3.44883976632012*^9, 3.448839837473954*^9}, {3.4488399236394157`*^9, 
+   3.448839924278307*^9}, {3.448839961553053*^9, 3.448839991577959*^9}, {
+   3.4488400321388063`*^9, 3.448840120176014*^9}},
+ CellID->1757240780],
+
+Cell["\<\
+In the second example, we consider the case of a particle in a double-well \
+potential which has two states below the tunneling barrier. The slider is \
+initially at the energy corresponding to the ground state. By carefully \
+adjusting the slider, one can determine the energy of the first excited \
+state, which shows a splitting of the energy levels due to tunneling. \
+\>", "ManipulateCaption",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.4477680051809273`*^9, 3.4477681445444307`*^9}, {
+   3.447768977707633*^9, 3.447768977710235*^9}, {3.448832549730459*^9, 
+   3.448832550324213*^9}, {3.448840132639922*^9, 3.44884013415032*^9}, {
+   3.4488402280022173`*^9, 3.4488403011386127`*^9}, {3.4489695929805737`*^9, 
+   3.4489695948086867`*^9}},
+ CellID->936672665]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "ThumbnailSection"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`energy$$ = 0.579, $CellContext`example$$ = 
+    2, Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`energy$$], 0.1, "energy (\[HBar]\[Omega])"}, 0, 1}, {
+      Hold[$CellContext`example$$], {1, 2}}}, Typeset`size$$ = {
+    360., {188., 193.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = False, $CellContext`energy$4273$$ = 
+    0, $CellContext`example$4274$$ = False}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`energy$$ = 0.1, $CellContext`example$$ = 
+        1}, "ControllerVariables" :> {
+        Hold[$CellContext`energy$$, $CellContext`energy$4273$$, 0], 
+        Hold[$CellContext`example$$, $CellContext`example$4274$$, False]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Switch[$CellContext`example$$, 1, 
+        $CellContext`Example1[0.4 + (9.5 - 0.4) $CellContext`energy$$], 2, 
+        $CellContext`Example2[-50 + (-200 + 50) $CellContext`energy$$]], 
+      "Specifications" :> {{{$CellContext`energy$$, 0.1, 
+          "energy (\[HBar]\[Omega])"}, 0, 1}, {$CellContext`example$$, {1, 
+         2}}}, "Options" :> {}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{407., {245., 250.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    Initialization:>({$CellContext`Example1[
+         Pattern[$CellContext`energy, 
+          Blank[]]] := 
+       Module[{$CellContext`plot1, $CellContext`plot2, $CellContext`psiscale, \
+$CellContext`energyscale}, $CellContext`VV[
+            Pattern[$CellContext`x, 
+             Blank[]]] := $CellContext`x^2/2; $CellContext`psiscale = 
+          3; $CellContext`energyscale = 1; $CellContext`plot1 = Plot[
+            $CellContext`VV[$CellContext`x], {$CellContext`x, -5, 5}, 
+            AspectRatio -> 1, PlotRange -> {-2, 10}, LabelStyle -> 14, 
+            AxesLabel -> {$CellContext`x, 
+              Row[{
+                $CellContext`V[$CellContext`x], " / ", 
+                "\[HBar]\[Omega]"}]}]; $CellContext`plot2 = ListPlot[
+            $CellContext`numerov[-5, 5, 1, $CellContext`energy, 
+             0.01, $CellContext`psiscale, $CellContext`energyscale], 
+            PlotRange -> All, Joined -> True, AspectRatio -> 1, PlotStyle -> 
+            Thick, Epilog -> {
+              Text["E = ", $CellContext`energy, "\[HBar]\[Omega]", {1, 8}]}]; 
+         Show[$CellContext`plot1, $CellContext`plot2]], $CellContext`VV[
+         Pattern[$CellContext`x, 
+          Blank[]]] := (-0.004) $CellContext`x^2 + 0.002 $CellContext`x^4, 
+       Attributes[PlotRange] = {ReadProtected}, $CellContext`numerov[
+         Pattern[$CellContext`xmin, 
+          Blank[]], 
+         Pattern[$CellContext`xmax, 
+          Blank[]], 
+         Pattern[$CellContext`mass, 
+          Blank[]], 
+         Pattern[$CellContext`energy, 
+          Blank[]], 
+         Pattern[$CellContext`step, 
+          Blank[]], 
+         Pattern[$CellContext`psiscale, 
+          Blank[]], 
+         Pattern[$CellContext`energyscale, 
+          Blank[]]] := 
+       Module[{$CellContext`nsteps, $CellContext`psim, $CellContext`x, \
+$CellContext`G, $CellContext`Gn, $CellContext`Gp, $CellContext`\[HBar], \
+$CellContext`Gm, $CellContext`s2, $CellContext`psin, $CellContext`xn, \
+$CellContext`xp, $CellContext`xm, $CellContext`n, $CellContext`psi, \
+$CellContext`psip}, $CellContext`nsteps = 
+          Floor[($CellContext`xmax - $CellContext`xmin)/$CellContext`step]; \
+$CellContext`psi = {1.*^-6, 
+           
+           0.00001}; $CellContext`x = {$CellContext`xmin, $CellContext`xmin + \
+$CellContext`step}; 
+         Do[$CellContext`psim = 
+            Part[$CellContext`psi, $CellContext`n - 1]; $CellContext`psin = 
+            Part[$CellContext`psi, $CellContext`n]; $CellContext`xm = 
+            Part[$CellContext`x, $CellContext`n - 1]; $CellContext`xn = 
+            Part[$CellContext`x, $CellContext`n]; $CellContext`xp = \
+$CellContext`xn + $CellContext`step; $CellContext`x = 
+            Append[$CellContext`x, $CellContext`xp]; $CellContext`Gn = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xn] - \
+$CellContext`energy); $CellContext`Gp = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xp] - \
+$CellContext`energy); $CellContext`Gm = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xm] - \
+$CellContext`energy); $CellContext`s2 = $CellContext`step^2/
+             12.; $CellContext`psip = (
+              2. $CellContext`psin - $CellContext`psim + $CellContext`s2 ((
+                  10. $CellContext`Gn) $CellContext`psin + $CellContext`Gm \
+$CellContext`psim))/(1. - $CellContext`s2 $CellContext`Gp); $CellContext`psi = 
+            Append[$CellContext`psi, $CellContext`psip], {$CellContext`n, 
+            2, $CellContext`nsteps}]; $CellContext`psi = \
+$CellContext`psiscale ($CellContext`psi/Max[
+              Abs[$CellContext`psi]]) + 
+           Table[$CellContext`energy $CellContext`energyscale, {
+              Length[$CellContext`psi]}]; 
+         Transpose[{$CellContext`x, $CellContext`psi}]], $CellContext`Example2[
+         Pattern[$CellContext`energy, 
+          Blank[]]] := 
+       Module[{$CellContext`en, $CellContext`plot1, $CellContext`plot2, \
+$CellContext`exact, $CellContext`cmm, $CellContext`psiscale, \
+$CellContext`energyscale}, $CellContext`VV[
+            Pattern[$CellContext`x, 
+             Blank[]]] := (-0.004) $CellContext`x^2 + 
+           0.002 $CellContext`x^4; $CellContext`cmm = 
+          27.2 8065.48; $CellContext`exact = {-0.0008551752250662832, \
+-0.0006239612460331329} $CellContext`cmm; $CellContext`psiscale = 
+          
+          100; $CellContext`energyscale = $CellContext`cmm; $CellContext`en = \
+$CellContext`energy/$CellContext`cmm; $CellContext`plot1 = 
+          Plot[$CellContext`VV[$CellContext`x] $CellContext`cmm, \
+{$CellContext`x, -2.3, 2.3}, AspectRatio -> 1, PlotRange -> {-500, 1}, 
+            LabelStyle -> 14, AxesLabel -> {$CellContext`x, 
+              Row[{
+                $CellContext`V[$CellContext`x], " / ", 
+                "\[HBar]\[Omega]"}]}]; $CellContext`plot2 = ListPlot[
+            $CellContext`numerov[-2.3, 2.3, 2000, $CellContext`en, 
+             0.01, $CellContext`psiscale, $CellContext`energyscale], 
+            PlotRange -> All, Joined -> True, AspectRatio -> 1, PlotStyle -> 
+            Thick]; Show[$CellContext`plot1, $CellContext`plot2, Epilog -> {
+             Line[{{-2.1, 
+                Part[$CellContext`exact, 1]}, {
+                Plus[2.1], 
+                Part[$CellContext`exact, 1]}}], 
+             Line[{{-2.1, 
+                Part[$CellContext`exact, 2]}, {
+                Plus[2.1], 
+                Part[$CellContext`exact, 2]}}]}]]}; Typeset`initDone$$ = True),
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{
+  3.35696210375764*^9, 3.448840816598619*^9, 3.448840866027718*^9, 
+   3.448841006154537*^9, 3.448843289960088*^9, {3.4488438010821466`*^9, 
+   3.4488438078063517`*^9}},
+ CellID->1750092236]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "SnapshotsSection"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`energy$$ = 0.9175, $CellContext`example$$ = 
+    2, Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`energy$$], 0.1, "energy (\[HBar]\[Omega])"}, 0, 1}, {
+      Hold[$CellContext`example$$], {1, 2}}}, Typeset`size$$ = {
+    360., {188., 193.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = False, $CellContext`energy$4273$$ = 
+    0, $CellContext`example$4274$$ = False}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`energy$$ = 0.1, $CellContext`example$$ = 
+        1}, "ControllerVariables" :> {
+        Hold[$CellContext`energy$$, $CellContext`energy$4273$$, 0], 
+        Hold[$CellContext`example$$, $CellContext`example$4274$$, False]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Switch[$CellContext`example$$, 1, 
+        $CellContext`Example1[0.4 + (9.5 - 0.4) $CellContext`energy$$], 2, 
+        $CellContext`Example2[-50 + (-200 + 50) $CellContext`energy$$]], 
+      "Specifications" :> {{{$CellContext`energy$$, 0.1, 
+          "energy (\[HBar]\[Omega])"}, 0, 1}, {$CellContext`example$$, {1, 
+         2}}}, "Options" :> {}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{407., {245., 250.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    Initialization:>({$CellContext`Example1[
+         Pattern[$CellContext`energy, 
+          Blank[]]] := 
+       Module[{$CellContext`plot1, $CellContext`plot2, $CellContext`psiscale, \
+$CellContext`energyscale}, $CellContext`VV[
+            Pattern[$CellContext`x, 
+             Blank[]]] := $CellContext`x^2/2; $CellContext`psiscale = 
+          3; $CellContext`energyscale = 1; $CellContext`plot1 = Plot[
+            $CellContext`VV[$CellContext`x], {$CellContext`x, -5, 5}, 
+            AspectRatio -> 1, PlotRange -> {-2, 10}, LabelStyle -> 14, 
+            AxesLabel -> {$CellContext`x, 
+              Row[{
+                $CellContext`V[$CellContext`x], " / ", 
+                "\[HBar]\[Omega]"}]}]; $CellContext`plot2 = ListPlot[
+            $CellContext`numerov[-5, 5, 1, $CellContext`energy, 
+             0.01, $CellContext`psiscale, $CellContext`energyscale], 
+            PlotRange -> All, Joined -> True, AspectRatio -> 1, PlotStyle -> 
+            Thick, Epilog -> {
+              Text["E = ", $CellContext`energy, "\[HBar]\[Omega]", {1, 8}]}]; 
+         Show[$CellContext`plot1, $CellContext`plot2]], $CellContext`VV[
+         Pattern[$CellContext`x, 
+          Blank[]]] := (-0.004) $CellContext`x^2 + 0.002 $CellContext`x^4, 
+       Attributes[PlotRange] = {ReadProtected}, $CellContext`numerov[
+         Pattern[$CellContext`xmin, 
+          Blank[]], 
+         Pattern[$CellContext`xmax, 
+          Blank[]], 
+         Pattern[$CellContext`mass, 
+          Blank[]], 
+         Pattern[$CellContext`energy, 
+          Blank[]], 
+         Pattern[$CellContext`step, 
+          Blank[]], 
+         Pattern[$CellContext`psiscale, 
+          Blank[]], 
+         Pattern[$CellContext`energyscale, 
+          Blank[]]] := 
+       Module[{$CellContext`nsteps, $CellContext`psim, $CellContext`x, \
+$CellContext`G, $CellContext`Gn, $CellContext`Gp, $CellContext`\[HBar], \
+$CellContext`Gm, $CellContext`s2, $CellContext`psin, $CellContext`xn, \
+$CellContext`xp, $CellContext`xm, $CellContext`n, $CellContext`psi, \
+$CellContext`psip}, $CellContext`nsteps = 
+          Floor[($CellContext`xmax - $CellContext`xmin)/$CellContext`step]; \
+$CellContext`psi = {1.*^-6, 
+           
+           0.00001}; $CellContext`x = {$CellContext`xmin, $CellContext`xmin + \
+$CellContext`step}; 
+         Do[$CellContext`psim = 
+            Part[$CellContext`psi, $CellContext`n - 1]; $CellContext`psin = 
+            Part[$CellContext`psi, $CellContext`n]; $CellContext`xm = 
+            Part[$CellContext`x, $CellContext`n - 1]; $CellContext`xn = 
+            Part[$CellContext`x, $CellContext`n]; $CellContext`xp = \
+$CellContext`xn + $CellContext`step; $CellContext`x = 
+            Append[$CellContext`x, $CellContext`xp]; $CellContext`Gn = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xn] - \
+$CellContext`energy); $CellContext`Gp = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xp] - \
+$CellContext`energy); $CellContext`Gm = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xm] - \
+$CellContext`energy); $CellContext`s2 = $CellContext`step^2/
+             12.; $CellContext`psip = (
+              2. $CellContext`psin - $CellContext`psim + $CellContext`s2 ((
+                  10. $CellContext`Gn) $CellContext`psin + $CellContext`Gm \
+$CellContext`psim))/(1. - $CellContext`s2 $CellContext`Gp); $CellContext`psi = 
+            Append[$CellContext`psi, $CellContext`psip], {$CellContext`n, 
+            2, $CellContext`nsteps}]; $CellContext`psi = \
+$CellContext`psiscale ($CellContext`psi/Max[
+              Abs[$CellContext`psi]]) + 
+           Table[$CellContext`energy $CellContext`energyscale, {
+              Length[$CellContext`psi]}]; 
+         Transpose[{$CellContext`x, $CellContext`psi}]], $CellContext`Example2[
+         Pattern[$CellContext`energy, 
+          Blank[]]] := 
+       Module[{$CellContext`en, $CellContext`plot1, $CellContext`plot2, \
+$CellContext`exact, $CellContext`cmm, $CellContext`psiscale, \
+$CellContext`energyscale}, $CellContext`VV[
+            Pattern[$CellContext`x, 
+             Blank[]]] := (-0.004) $CellContext`x^2 + 
+           0.002 $CellContext`x^4; $CellContext`cmm = 
+          27.2 8065.48; $CellContext`exact = {-0.0008551752250662832, \
+-0.0006239612460331329} $CellContext`cmm; $CellContext`psiscale = 
+          
+          100; $CellContext`energyscale = $CellContext`cmm; $CellContext`en = \
+$CellContext`energy/$CellContext`cmm; $CellContext`plot1 = 
+          Plot[$CellContext`VV[$CellContext`x] $CellContext`cmm, \
+{$CellContext`x, -2.3, 2.3}, AspectRatio -> 1, PlotRange -> {-500, 1}, 
+            LabelStyle -> 14, AxesLabel -> {$CellContext`x, 
+              Row[{
+                $CellContext`V[$CellContext`x], " / ", 
+                "\[HBar]\[Omega]"}]}]; $CellContext`plot2 = ListPlot[
+            $CellContext`numerov[-2.3, 2.3, 2000, $CellContext`en, 
+             0.01, $CellContext`psiscale, $CellContext`energyscale], 
+            PlotRange -> All, Joined -> True, AspectRatio -> 1, PlotStyle -> 
+            Thick]; Show[$CellContext`plot1, $CellContext`plot2, Epilog -> {
+             Line[{{-2.1, 
+                Part[$CellContext`exact, 1]}, {
+                Plus[2.1], 
+                Part[$CellContext`exact, 1]}}], 
+             Line[{{-2.1, 
+                Part[$CellContext`exact, 2]}, {
+                Plus[2.1], 
+                Part[$CellContext`exact, 2]}}]}]]}; Typeset`initDone$$ = True),
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.35696210375764*^9, 3.448840816598619*^9, 
+  3.448840866027718*^9, 3.448841006154537*^9, 3.448843289960088*^9},
+ CellID->1864181140],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`energy$$ = 
+    0.1208791208791209, $CellContext`example$$ = 1, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`energy$$], 0.1208791208791209, 
+       "energy (\[HBar]\[Omega])"}, 0, 1}, {
+      Hold[$CellContext`example$$], {1, 2}}}, Typeset`size$$ = {
+    360., {186., 190.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = False, $CellContext`energy$3039$$ = 
+    0, $CellContext`example$3040$$ = False}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`energy$$ = 
+        0.1208791208791209, $CellContext`example$$ = 1}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`energy$$, $CellContext`energy$3039$$, 0], 
+        Hold[$CellContext`example$$, $CellContext`example$3040$$, False]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Switch[$CellContext`example$$, 1, 
+        $CellContext`Example1[0.4 + (9.5 - 0.4) $CellContext`energy$$], 2, 
+        $CellContext`Example2[-50 + (-200 + 50) $CellContext`energy$$]], 
+      "Specifications" :> {{{$CellContext`energy$$, 0.1208791208791209, 
+          "energy (\[HBar]\[Omega])"}, 0, 1}, {$CellContext`example$$, {1, 
+         2}}}, "Options" :> {}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{407., {243., 248.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    Initialization:>({$CellContext`Example1[
+         Pattern[$CellContext`energy, 
+          Blank[]]] := 
+       Module[{$CellContext`plot1, $CellContext`plot2, $CellContext`psiscale, \
+$CellContext`energyscale}, $CellContext`VV[
+            Pattern[$CellContext`x, 
+             Blank[]]] := $CellContext`x^2/2; $CellContext`psiscale = 
+          3; $CellContext`energyscale = 1; $CellContext`plot1 = Plot[
+            $CellContext`VV[$CellContext`x], {$CellContext`x, -5, 5}, 
+            AspectRatio -> 1, PlotRange -> {-2, 10}, LabelStyle -> 14, 
+            AxesLabel -> {$CellContext`x, 
+              Row[{
+                $CellContext`V[$CellContext`x], " / ", 
+                "\[HBar]\[Omega]"}]}]; $CellContext`plot2 = ListPlot[
+            $CellContext`numerov[-5, 5, 1, $CellContext`energy, 
+             0.01, $CellContext`psiscale, $CellContext`energyscale], 
+            PlotRange -> All, Joined -> True, AspectRatio -> 1, PlotStyle -> 
+            Thick, Epilog -> {
+              Text["E = ", $CellContext`energy, "\[HBar]\[Omega]", {1, 8}]}]; 
+         Show[$CellContext`plot1, $CellContext`plot2]], $CellContext`VV[
+         Pattern[$CellContext`x, 
+          Blank[]]] := $CellContext`x^2/2, 
+       Attributes[PlotRange] = {ReadProtected}, $CellContext`numerov[
+         Pattern[$CellContext`xmin, 
+          Blank[]], 
+         Pattern[$CellContext`xmax, 
+          Blank[]], 
+         Pattern[$CellContext`mass, 
+          Blank[]], 
+         Pattern[$CellContext`energy, 
+          Blank[]], 
+         Pattern[$CellContext`step, 
+          Blank[]], 
+         Pattern[$CellContext`psiscale, 
+          Blank[]], 
+         Pattern[$CellContext`energyscale, 
+          Blank[]]] := 
+       Module[{$CellContext`nsteps, $CellContext`psim, $CellContext`x, \
+$CellContext`G, $CellContext`Gn, $CellContext`Gp, $CellContext`\[HBar], \
+$CellContext`Gm, $CellContext`s2, $CellContext`psin, $CellContext`xn, \
+$CellContext`xp, $CellContext`xm, $CellContext`n, $CellContext`psi, \
+$CellContext`psip}, $CellContext`nsteps = 
+          Floor[($CellContext`xmax - $CellContext`xmin)/$CellContext`step]; \
+$CellContext`psi = {1.*^-6, 
+           0.00001}; $CellContext`x = {$CellContext`xmin, $CellContext`xmin + \
+$CellContext`step}; 
+         Do[$CellContext`psim = 
+            Part[$CellContext`psi, $CellContext`n - 1]; $CellContext`psin = 
+            Part[$CellContext`psi, $CellContext`n]; $CellContext`xm = 
+            Part[$CellContext`x, $CellContext`n - 1]; $CellContext`xn = 
+            Part[$CellContext`x, $CellContext`n]; $CellContext`xp = \
+$CellContext`xn + $CellContext`step; $CellContext`x = 
+            Append[$CellContext`x, $CellContext`xp]; $CellContext`Gn = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xn] - \
+$CellContext`energy); $CellContext`Gp = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xp] - \
+$CellContext`energy); $CellContext`Gm = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xm] - \
+$CellContext`energy); $CellContext`s2 = $CellContext`step^2/
+             12.; $CellContext`psip = (
+              2. $CellContext`psin - $CellContext`psim + $CellContext`s2 ((
+                  10. $CellContext`Gn) $CellContext`psin + $CellContext`Gm \
+$CellContext`psim))/(1. - $CellContext`s2 $CellContext`Gp); $CellContext`psi = 
+            Append[$CellContext`psi, $CellContext`psip], {$CellContext`n, 
+            2, $CellContext`nsteps}]; $CellContext`psi = \
+$CellContext`psiscale ($CellContext`psi/Max[
+              Abs[$CellContext`psi]]) + 
+           Table[$CellContext`energy $CellContext`energyscale, {
+              Length[$CellContext`psi]}]; 
+         Transpose[{$CellContext`x, $CellContext`psi}]], $CellContext`Example2[
+         Pattern[$CellContext`energy, 
+          Blank[]]] := 
+       Module[{$CellContext`en, $CellContext`plot1, $CellContext`plot2, \
+$CellContext`exact, $CellContext`cmm, $CellContext`psiscale, \
+$CellContext`energyscale}, $CellContext`VV[
+            Pattern[$CellContext`x, 
+             Blank[]]] := (-0.004) $CellContext`x^2 + 
+           0.002 $CellContext`x^4; $CellContext`cmm = 
+          27.2 8065.48; $CellContext`exact = {-0.0008551752250662832, \
+-0.0006239612460331329} $CellContext`cmm; $CellContext`psiscale = 
+          100; $CellContext`energyscale = $CellContext`cmm; $CellContext`en = \
+$CellContext`energy/$CellContext`cmm; $CellContext`plot1 = 
+          Plot[$CellContext`VV[$CellContext`x] $CellContext`cmm, \
+{$CellContext`x, -2.3, 2.3}, AspectRatio -> 1, PlotRange -> {-500, 1}, 
+            LabelStyle -> 14, AxesLabel -> {$CellContext`x, 
+              $CellContext`Ro[{
+                $CellContext`V[$CellContext`x], 
+                " (\!\(\*SuperscriptBox[\(cm\), \(-1\)]\))"}]}]; \
+$CellContext`plot2 = ListPlot[
+            $CellContext`numerov[-2.3, 2.3, 2000, $CellContext`en, 
+             0.01, $CellContext`psiscale, $CellContext`energyscale], 
+            PlotRange -> All, Joined -> True, AspectRatio -> 1, PlotStyle -> 
+            Thick]; Show[$CellContext`plot1, $CellContext`plot2, Epilog -> {
+             Line[{{-2.1, 
+                Part[$CellContext`exact, 1]}, {
+                Plus[2.1], 
+                Part[$CellContext`exact, 1]}}], 
+             Line[{{-2.1, 
+                Part[$CellContext`exact, 2]}, {
+                Plus[2.1], 
+                Part[$CellContext`exact, 2]}}]}]]}; Typeset`initDone$$ = True),
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellID->166393427],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`energy$$ = 0.12088, $CellContext`example$$ =
+     1, Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`energy$$], 0.12088, "energy (\[HBar]\[Omega])"}, 0, 
+      1}, {
+      Hold[$CellContext`example$$], {1, 2}}}, Typeset`size$$ = {
+    360., {186., 190.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = False, $CellContext`energy$3095$$ = 
+    0, $CellContext`example$3096$$ = False}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`energy$$ = 0.12088, $CellContext`example$$ = 
+        1}, "ControllerVariables" :> {
+        Hold[$CellContext`energy$$, $CellContext`energy$3095$$, 0], 
+        Hold[$CellContext`example$$, $CellContext`example$3096$$, False]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Switch[$CellContext`example$$, 1, 
+        $CellContext`Example1[0.4 + (9.5 - 0.4) $CellContext`energy$$], 2, 
+        $CellContext`Example2[-50 + (-200 + 50) $CellContext`energy$$]], 
+      "Specifications" :> {{{$CellContext`energy$$, 0.12088, 
+          "energy (\[HBar]\[Omega])"}, 0, 1}, {$CellContext`example$$, {1, 
+         2}}}, "Options" :> {}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{407., {243., 248.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    Initialization:>({$CellContext`Example1[
+         Pattern[$CellContext`energy, 
+          Blank[]]] := 
+       Module[{$CellContext`plot1, $CellContext`plot2, $CellContext`psiscale, \
+$CellContext`energyscale}, $CellContext`VV[
+            Pattern[$CellContext`x, 
+             Blank[]]] := $CellContext`x^2/2; $CellContext`psiscale = 
+          3; $CellContext`energyscale = 1; $CellContext`plot1 = Plot[
+            $CellContext`VV[$CellContext`x], {$CellContext`x, -5, 5}, 
+            AspectRatio -> 1, PlotRange -> {-2, 10}, LabelStyle -> 14, 
+            AxesLabel -> {$CellContext`x, 
+              Row[{
+                $CellContext`V[$CellContext`x], " / ", 
+                "\[HBar]\[Omega]"}]}]; $CellContext`plot2 = ListPlot[
+            $CellContext`numerov[-5, 5, 1, $CellContext`energy, 
+             0.01, $CellContext`psiscale, $CellContext`energyscale], 
+            PlotRange -> All, Joined -> True, AspectRatio -> 1, PlotStyle -> 
+            Thick, Epilog -> {
+              Text["E = ", $CellContext`energy, "\[HBar]\[Omega]", {1, 8}]}]; 
+         Show[$CellContext`plot1, $CellContext`plot2]], $CellContext`VV[
+         Pattern[$CellContext`x, 
+          Blank[]]] := $CellContext`x^2/2, 
+       Attributes[PlotRange] = {ReadProtected}, $CellContext`numerov[
+         Pattern[$CellContext`xmin, 
+          Blank[]], 
+         Pattern[$CellContext`xmax, 
+          Blank[]], 
+         Pattern[$CellContext`mass, 
+          Blank[]], 
+         Pattern[$CellContext`energy, 
+          Blank[]], 
+         Pattern[$CellContext`step, 
+          Blank[]], 
+         Pattern[$CellContext`psiscale, 
+          Blank[]], 
+         Pattern[$CellContext`energyscale, 
+          Blank[]]] := 
+       Module[{$CellContext`nsteps, $CellContext`psim, $CellContext`x, \
+$CellContext`G, $CellContext`Gn, $CellContext`Gp, $CellContext`\[HBar], \
+$CellContext`Gm, $CellContext`s2, $CellContext`psin, $CellContext`xn, \
+$CellContext`xp, $CellContext`xm, $CellContext`n, $CellContext`psi, \
+$CellContext`psip}, $CellContext`nsteps = 
+          Floor[($CellContext`xmax - $CellContext`xmin)/$CellContext`step]; \
+$CellContext`psi = {1.*^-6, 
+           0.00001}; $CellContext`x = {$CellContext`xmin, $CellContext`xmin + \
+$CellContext`step}; 
+         Do[$CellContext`psim = 
+            Part[$CellContext`psi, $CellContext`n - 1]; $CellContext`psin = 
+            Part[$CellContext`psi, $CellContext`n]; $CellContext`xm = 
+            Part[$CellContext`x, $CellContext`n - 1]; $CellContext`xn = 
+            Part[$CellContext`x, $CellContext`n]; $CellContext`xp = \
+$CellContext`xn + $CellContext`step; $CellContext`x = 
+            Append[$CellContext`x, $CellContext`xp]; $CellContext`Gn = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xn] - \
+$CellContext`energy); $CellContext`Gp = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xp] - \
+$CellContext`energy); $CellContext`Gm = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xm] - \
+$CellContext`energy); $CellContext`s2 = $CellContext`step^2/
+             12.; $CellContext`psip = (
+              2. $CellContext`psin - $CellContext`psim + $CellContext`s2 ((
+                  10. $CellContext`Gn) $CellContext`psin + $CellContext`Gm \
+$CellContext`psim))/(1. - $CellContext`s2 $CellContext`Gp); $CellContext`psi = 
+            Append[$CellContext`psi, $CellContext`psip], {$CellContext`n, 
+            2, $CellContext`nsteps}]; $CellContext`psi = \
+$CellContext`psiscale ($CellContext`psi/Max[
+              Abs[$CellContext`psi]]) + 
+           Table[$CellContext`energy $CellContext`energyscale, {
+              Length[$CellContext`psi]}]; 
+         Transpose[{$CellContext`x, $CellContext`psi}]], $CellContext`Example2[
+         Pattern[$CellContext`energy, 
+          Blank[]]] := 
+       Module[{$CellContext`en, $CellContext`plot1, $CellContext`plot2, \
+$CellContext`exact, $CellContext`cmm, $CellContext`psiscale, \
+$CellContext`energyscale}, $CellContext`VV[
+            Pattern[$CellContext`x, 
+             Blank[]]] := (-0.004) $CellContext`x^2 + 
+           0.002 $CellContext`x^4; $CellContext`cmm = 
+          27.2 8065.48; $CellContext`exact = {-0.0008551752250662832, \
+-0.0006239612460331329} $CellContext`cmm; $CellContext`psiscale = 
+          100; $CellContext`energyscale = $CellContext`cmm; $CellContext`en = \
+$CellContext`energy/$CellContext`cmm; $CellContext`plot1 = 
+          Plot[$CellContext`VV[$CellContext`x] $CellContext`cmm, \
+{$CellContext`x, -2.3, 2.3}, AspectRatio -> 1, PlotRange -> {-500, 1}, 
+            LabelStyle -> 14, AxesLabel -> {$CellContext`x, 
+              $CellContext`Ro[{
+                $CellContext`V[$CellContext`x], 
+                " (\!\(\*SuperscriptBox[\(cm\), \(-1\)]\))"}]}]; \
+$CellContext`plot2 = ListPlot[
+            $CellContext`numerov[-2.3, 2.3, 2000, $CellContext`en, 
+             0.01, $CellContext`psiscale, $CellContext`energyscale], 
+            PlotRange -> All, Joined -> True, AspectRatio -> 1, PlotStyle -> 
+            Thick]; Show[$CellContext`plot1, $CellContext`plot2, Epilog -> {
+             Line[{{-2.1, 
+                Part[$CellContext`exact, 1]}, {
+                Plus[2.1], 
+                Part[$CellContext`exact, 1]}}], 
+             Line[{{-2.1, 
+                Part[$CellContext`exact, 2]}, {
+                Plus[2.1], 
+                Part[$CellContext`exact, 2]}}]}]]}; Typeset`initDone$$ = True),
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellID->537831788],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`energy$$ = 
+    0.12086813186813186`, $CellContext`example$$ = 1, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`energy$$], 0.12086813186813186`, 
+       "energy (\[HBar]\[Omega])"}, 0, 1}, {
+      Hold[$CellContext`example$$], {1, 2}}}, Typeset`size$$ = {
+    360., {186., 190.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = False, $CellContext`energy$3151$$ = 
+    0, $CellContext`example$3152$$ = False}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`energy$$ = 
+        0.12086813186813186`, $CellContext`example$$ = 1}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`energy$$, $CellContext`energy$3151$$, 0], 
+        Hold[$CellContext`example$$, $CellContext`example$3152$$, False]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Switch[$CellContext`example$$, 1, 
+        $CellContext`Example1[0.4 + (9.5 - 0.4) $CellContext`energy$$], 2, 
+        $CellContext`Example2[-50 + (-200 + 50) $CellContext`energy$$]], 
+      "Specifications" :> {{{$CellContext`energy$$, 0.12086813186813186`, 
+          "energy (\[HBar]\[Omega])"}, 0, 1}, {$CellContext`example$$, {1, 
+         2}}}, "Options" :> {}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{407., {243., 248.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    Initialization:>({$CellContext`Example1[
+         Pattern[$CellContext`energy, 
+          Blank[]]] := 
+       Module[{$CellContext`plot1, $CellContext`plot2, $CellContext`psiscale, \
+$CellContext`energyscale}, $CellContext`VV[
+            Pattern[$CellContext`x, 
+             Blank[]]] := $CellContext`x^2/2; $CellContext`psiscale = 
+          3; $CellContext`energyscale = 1; $CellContext`plot1 = Plot[
+            $CellContext`VV[$CellContext`x], {$CellContext`x, -5, 5}, 
+            AspectRatio -> 1, PlotRange -> {-2, 10}, LabelStyle -> 14, 
+            AxesLabel -> {$CellContext`x, 
+              Row[{
+                $CellContext`V[$CellContext`x], " / ", 
+                "\[HBar]\[Omega]"}]}]; $CellContext`plot2 = ListPlot[
+            $CellContext`numerov[-5, 5, 1, $CellContext`energy, 
+             0.01, $CellContext`psiscale, $CellContext`energyscale], 
+            PlotRange -> All, Joined -> True, AspectRatio -> 1, PlotStyle -> 
+            Thick, Epilog -> {
+              Text["E = ", $CellContext`energy, "\[HBar]\[Omega]", {1, 8}]}]; 
+         Show[$CellContext`plot1, $CellContext`plot2]], $CellContext`VV[
+         Pattern[$CellContext`x, 
+          Blank[]]] := $CellContext`x^2/2, 
+       Attributes[PlotRange] = {ReadProtected}, $CellContext`numerov[
+         Pattern[$CellContext`xmin, 
+          Blank[]], 
+         Pattern[$CellContext`xmax, 
+          Blank[]], 
+         Pattern[$CellContext`mass, 
+          Blank[]], 
+         Pattern[$CellContext`energy, 
+          Blank[]], 
+         Pattern[$CellContext`step, 
+          Blank[]], 
+         Pattern[$CellContext`psiscale, 
+          Blank[]], 
+         Pattern[$CellContext`energyscale, 
+          Blank[]]] := 
+       Module[{$CellContext`nsteps, $CellContext`psim, $CellContext`x, \
+$CellContext`G, $CellContext`Gn, $CellContext`Gp, $CellContext`\[HBar], \
+$CellContext`Gm, $CellContext`s2, $CellContext`psin, $CellContext`xn, \
+$CellContext`xp, $CellContext`xm, $CellContext`n, $CellContext`psi, \
+$CellContext`psip}, $CellContext`nsteps = 
+          Floor[($CellContext`xmax - $CellContext`xmin)/$CellContext`step]; \
+$CellContext`psi = {1.*^-6, 
+           0.00001}; $CellContext`x = {$CellContext`xmin, $CellContext`xmin + \
+$CellContext`step}; 
+         Do[$CellContext`psim = 
+            Part[$CellContext`psi, $CellContext`n - 1]; $CellContext`psin = 
+            Part[$CellContext`psi, $CellContext`n]; $CellContext`xm = 
+            Part[$CellContext`x, $CellContext`n - 1]; $CellContext`xn = 
+            Part[$CellContext`x, $CellContext`n]; $CellContext`xp = \
+$CellContext`xn + $CellContext`step; $CellContext`x = 
+            Append[$CellContext`x, $CellContext`xp]; $CellContext`Gn = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xn] - \
+$CellContext`energy); $CellContext`Gp = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xp] - \
+$CellContext`energy); $CellContext`Gm = (
+              2 $CellContext`mass) ($CellContext`VV[$CellContext`xm] - \
+$CellContext`energy); $CellContext`s2 = $CellContext`step^2/
+             12.; $CellContext`psip = (
+              2. $CellContext`psin - $CellContext`psim + $CellContext`s2 ((
+                  10. $CellContext`Gn) $CellContext`psin + $CellContext`Gm \
+$CellContext`psim))/(1. - $CellContext`s2 $CellContext`Gp); $CellContext`psi = 
+            Append[$CellContext`psi, $CellContext`psip], {$CellContext`n, 
+            2, $CellContext`nsteps}]; $CellContext`psi = \
+$CellContext`psiscale ($CellContext`psi/Max[
+              Abs[$CellContext`psi]]) + 
+           Table[$CellContext`energy $CellContext`energyscale, {
+              Length[$CellContext`psi]}]; 
+         Transpose[{$CellContext`x, $CellContext`psi}]], $CellContext`Example2[
+         Pattern[$CellContext`energy, 
+          Blank[]]] := 
+       Module[{$CellContext`en, $CellContext`plot1, $CellContext`plot2, \
+$CellContext`exact, $CellContext`cmm, $CellContext`psiscale, \
+$CellContext`energyscale}, $CellContext`VV[
+            Pattern[$CellContext`x, 
+             Blank[]]] := (-0.004) $CellContext`x^2 + 
+           0.002 $CellContext`x^4; $CellContext`cmm = 
+          27.2 8065.48; $CellContext`exact = {-0.0008551752250662832, \
+-0.0006239612460331329} $CellContext`cmm; $CellContext`psiscale = 
+          100; $CellContext`energyscale = $CellContext`cmm; $CellContext`en = \
+$CellContext`energy/$CellContext`cmm; $CellContext`plot1 = 
+          Plot[$CellContext`VV[$CellContext`x] $CellContext`cmm, \
+{$CellContext`x, -2.3, 2.3}, AspectRatio -> 1, PlotRange -> {-500, 1}, 
+            LabelStyle -> 14, AxesLabel -> {$CellContext`x, 
+              $CellContext`Ro[{
+                $CellContext`V[$CellContext`x], 
+                " (\!\(\*SuperscriptBox[\(cm\), \(-1\)]\))"}]}]; \
+$CellContext`plot2 = ListPlot[
+            $CellContext`numerov[-2.3, 2.3, 2000, $CellContext`en, 
+             0.01, $CellContext`psiscale, $CellContext`energyscale], 
+            PlotRange -> All, Joined -> True, AspectRatio -> 1, PlotStyle -> 
+            Thick]; Show[$CellContext`plot1, $CellContext`plot2, Epilog -> {
+             Line[{{-2.1, 
+                Part[$CellContext`exact, 1]}, {
+                Plus[2.1], 
+                Part[$CellContext`exact, 1]}}], 
+             Line[{{-2.1, 
+                Part[$CellContext`exact, 2]}, {
+                Plus[2.1], 
+                Part[$CellContext`exact, 2]}}]}]]}; Typeset`initDone$$ = True),
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellID->56975501]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "DetailsSection"],
+
+Cell["Snapshot 1: ground state of double-well potential", "DetailNotes",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.448834175147112*^9, 3.448834219084893*^9}, {
+   3.4488342949291286`*^9, 3.4488342953822565`*^9}, {3.4489696569332895`*^9, 
+   3.4489696571989126`*^9}},
+ CellID->612497641],
+
+Cell[TextData[{
+ "In this case quantum mechanical tunneling produces a delocalization of the \
+wavefunction between the two wells. One can clearly see that a considerable \
+portion of ",
+ Cell[BoxData[
+  FormBox["\[Psi]", TraditionalForm]], "InlineMath"],
+ " is \"underneath the barrier\"."
+}], "DetailNotes",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.448834175147112*^9, 3.448834219084893*^9}, 
+   3.4488343203355412`*^9},
+ CellID->49290722],
+
+Cell[TextData[{
+ "Snapshot 2: Numerov solution for the ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"n", "=", "1"}], TraditionalForm]], "InlineMath",
+  FormatType->"TraditionalForm"],
+ " first excited state of a harmonic oscillator at ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"E", " ", "=", " ", 
+    RowBox[{"3", 
+     RowBox[{"\[HBar]\[Omega]", "/", "2"}]}]}], TraditionalForm]], 
+  "InlineMath",
+  FormatType->"TraditionalForm"]
+}], "DetailNotes",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.4488341555532365`*^9, 3.448834162318905*^9}, {
+   3.4488342257099357`*^9, 3.44883424521006*^9}},
+ CellID->467811837],
+
+Cell[TextData[{
+ "Notice that stationary solutions occur only when when ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"\[Psi]", 
+    RowBox[{"(", "x", ")"}]}], TraditionalForm]], "InlineMath"],
+ " obeys the boundary conditions that it vanish as ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"x", "\[Rule]", 
+    RowBox[{"\[PlusMinus]", "\[Infinity]"}]}], TraditionalForm]], 
+  "InlineMath"],
+ ". "
+}], "DetailNotes",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.4488341555532365`*^9, 3.448834162318905*^9}, {
+   3.4488342257099357`*^9, 3.4488342628976736`*^9}, 3.448834310351102*^9, {
+   3.44896970294862*^9, 3.448969703198618*^9}},
+ CellID->216404523],
+
+Cell[TextData[{
+ "In the next two snapshots, when ",
+ Cell[BoxData[
+  FormBox["E", TraditionalForm]], "InlineMath",
+  FormatType->"TraditionalForm"],
+ " is slightly above or below this value, ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"\[Psi]", 
+    RowBox[{"(", "x", ")"}]}], TraditionalForm]], "InlineMath",
+  FormatType->"TraditionalForm"],
+ " diverges as ",
+ Cell[BoxData[
+  FormBox["x", TraditionalForm]], "InlineMath",
+  FormatType->"TraditionalForm"],
+ " becomes large. "
+}], "DetailNotes",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.4488341555532365`*^9, 3.448834162318905*^9}, {
+   3.4488342257099357`*^9, 3.4488342799446573`*^9}},
+ CellID->2888771],
+
+Cell[TextData[{
+ "For an elementary overview of quantum mechanics and the use of the Numerov \
+approach to compute stationary solutions, the interested viewer is referred \
+to I. Levine, ",
+ StyleBox["Quantum Chemistry, ",
+  FontSlant->"Italic"],
+ "5th ed",
+ StyleBox[".",
+  FontSlant->"Italic"],
+ ", Upper Saddle River, New Jersey: Prentice Hall, 1999."
+}], "DetailNotes",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.447769041551094*^9, 3.447769089452441*^9}, {
+   3.447769167871827*^9, 3.4477691737025633`*^9}, {3.448834335757515*^9, 
+   3.4488343580701575`*^9}, 3.4488346532625637`*^9, {3.4488348386963053`*^9, 
+   3.448834852994096*^9}, {3.4488349742021627`*^9, 3.448834975327192*^9}, {
+   3.4489697561670294`*^9, 3.4489697656669683`*^9}},
+ CellID->1008292026]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "ControlSuggestionsSection",
+ CellID->146334000],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[True], Cell[" Slider Zoom"]}],
+  "Hold down the Alt key while moving the sliders for fine adjustment. \n\
+Holding Ctrl and/or Shift at the same time as Alt increases the precision of \
+the adjustment.",
+  TooltipDelay->0.35]], "ControlSuggestions",
+ CellChangeTimes->{3.35696210375764*^9, 3.447768771333596*^9},
+ FontFamily->"Verdana",
+ CellTags->"SliderZoom",
+ CellID->566762185],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Drag Locators"]}],
+  "Drag the locators inside this Demonstration to change its settings.",
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"DragLocators",
+ CellID->1482068850],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Rotate and Zoom in 3D"]}],
+  "Drag a 3D graphic to rotate it. Starting the drag near the center tumbles \
+the graphic; \nstarting near a corner turns it parallel to the plane of the \
+screen. Hold down Ctrl \n(or Cmd on Mac) and drag up and down to zoom.",
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"RotateAndZoomIn3D",
+ CellID->468340397],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Automatic Animation"]}],
+  "Make an animation by clicking the button next to a slider and the play \
+button \nthat appears underneath it, or animate all the sliders by selecting \
+Autorun \nfrom the menu.",
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"AutomaticAnimation",
+ CellID->869486124],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Gamepad Controls"]}],
+  "Instead of using the sliders and other controls, use a gamepad connected \
+to your computer.",
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"GamepadControls",
+ CellID->1974551880],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Resize Images"]}],
+  "Drag the lower\[Hyphen]right corner of an image to resize it.",
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"ResizeImages",
+ CellID->1228650069],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Bookmark Animation"]}],
+  "Create an animation by adding bookmarks and then selecting Animate \
+Bookmarks from the menu.",
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"BookmarkAnimation",
+ CellID->1866443778]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "SearchTermsSection"],
+
+Cell["quantum mechanics", "SearchTerms",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.36434516692238*^9, 3.36434517307863*^9}, {
+   3.4477687946546907`*^9, 3.447768798190124*^9}},
+ CellID->9620120],
+
+Cell["tunneling", "SearchTerms",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.364345187125*^9, 3.36434519742188*^9}, {
+   3.447768801438443*^9, 3.447768802414349*^9}},
+ CellID->245912470],
+
+Cell["Schrodinger equation", "SearchTerms",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.36434517834425*^9, 3.36434518228175*^9}, {
+   3.44776880539855*^9, 3.447768828270886*^9}},
+ CellID->316166559],
+
+Cell["Numerov method", "SearchTerms",
+ CellChangeTimes->{
+  3.35696210375764*^9, {3.36434515707863*^9, 3.364345162188*^9}, {
+   3.4477688155987263`*^9, 3.447768818006772*^9}},
+ CellID->137963802]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "RelatedLinksSection"],
+
+Cell[TextData[ButtonBox["Tunneling",
+ BaseStyle->"Hyperlink",
+ ButtonData->{
+   URL["http://scienceworld.wolfram.com/physics/Tunneling.html"], None},
+ ButtonNote->
+  "http://scienceworld.wolfram.com/physics/Tunneling.html"]], "RelatedLinks",
+ CellID->881522522]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "AuthorSection"],
+
+Cell[TextData[{
+ "Contributed by: ",
+ ButtonBox["Eric R. Bittner",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://demonstrations.wolfram.com/author.html?author=Eric+R.+\
+Bittner"], None},
+  ButtonNote->
+   "http://demonstrations.wolfram.com/author.html?author=Eric+R.+Bittner"]
+}], "Author",
+ CellChangeTimes->{{3.35332404745022*^9, 3.35332404993458*^9}, {
+   3.36434516804688*^9, 3.36434517198438*^9}, 3.36924285448438*^9, {
+   3.447768782918689*^9, 3.447768788613892*^9}, {3.4489815890587826`*^9, 
+   3.4489815941681905`*^9}},
+ CellID->95413255]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{702, 859},
+WindowMargins->{{Automatic, 296}, {Automatic, -3}},
+Magnification->1.,
+FrontEndVersion->"7.0 for Microsoft Windows (32-bit) (February 18, 2009)",
+StyleDefinitions->FrontEnd`FileName[{"Wolfram"}, "Demonstration.nb", 
+  CharacterEncoding -> "WindowsANSI"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{
+ "SliderZoom"->{
+  Cell[75339, 1617, 433, 11, 22, "ControlSuggestions",
+   CellTags->"SliderZoom",
+   CellID->566762185]},
+ "DragLocators"->{
+  Cell[75775, 1630, 277, 8, 22, "ControlSuggestions",
+   CellTags->"DragLocators",
+   CellID->1482068850]},
+ "RotateAndZoomIn3D"->{
+  Cell[76055, 1640, 446, 10, 22, "ControlSuggestions",
+   CellTags->"RotateAndZoomIn3D",
+   CellID->468340397]},
+ "AutomaticAnimation"->{
+  Cell[76504, 1652, 397, 10, 22, "ControlSuggestions",
+   CellTags->"AutomaticAnimation",
+   CellID->869486124]},
+ "GamepadControls"->{
+  Cell[76904, 1664, 308, 9, 22, "ControlSuggestions",
+   CellTags->"GamepadControls",
+   CellID->1974551880]},
+ "ResizeImages"->{
+  Cell[77215, 1675, 271, 8, 22, "ControlSuggestions",
+   CellTags->"ResizeImages",
+   CellID->1228650069]},
+ "BookmarkAnimation"->{
+  Cell[77489, 1685, 313, 9, 22, "ControlSuggestions",
+   CellTags->"BookmarkAnimation",
+   CellID->1866443778]}
+ }
+*)
+(*CellTagsIndex
+CellTagsIndex->{
+ {"SliderZoom", 80039, 1773},
+ {"DragLocators", 80164, 1777},
+ {"RotateAndZoomIn3D", 80296, 1781},
+ {"AutomaticAnimation", 80434, 1785},
+ {"GamepadControls", 80570, 1789},
+ {"ResizeImages", 80700, 1793},
+ {"BookmarkAnimation", 80832, 1797}
+ }
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[567, 22, 329, 5, 104, "DemoTitle",
+ CellID->700863240],
+Cell[CellGroupData[{
+Cell[921, 31, 33, 0, 266, "InitializationSection"],
+Cell[957, 33, 6234, 143, 388, "Input",
+ CellID->24470059],
+Cell[7194, 178, 4780, 93, 268, "Input",
+ CellID->144276704],
+Cell[11977, 273, 6313, 134, 372, "Input",
+ CellID->222216568]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[18327, 412, 29, 0, 188, "ManipulateSection"],
+Cell[CellGroupData[{
+Cell[18381, 416, 1578, 37, 168, "Input",
+ CellID->271187980],
+Cell[19962, 455, 7613, 143, 503, "Output",
+ CellID->384190274]
+}, {2}]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[27621, 604, 36, 0, 166, "ManipulateCaptionSection"],
+Cell[27660, 606, 337, 7, 37, "ManipulateCaption",
+ CellID->257893600],
+Cell[28000, 615, 729, 23, 39, "ManipulateCaption",
+ CellID->795735554],
+Cell[28732, 640, 2924, 78, 178, "ManipulateCaption",
+ CellID->1220339635],
+Cell[31659, 720, 1313, 33, 82, "ManipulateCaption",
+ CellID->1757240780],
+Cell[32975, 755, 775, 13, 82, "ManipulateCaption",
+ CellID->936672665]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[33787, 773, 28, 0, 168, "ThumbnailSection"],
+Cell[33818, 775, 7674, 145, 507, "Output",
+ CellID->1750092236]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[41529, 925, 28, 0, 138, "SnapshotsSection"],
+Cell[41560, 927, 7617, 143, 507, "Output",
+ CellID->1864181140],
+Cell[49180, 1072, 7539, 143, 503, "Output",
+ CellID->166393427],
+Cell[56722, 1217, 7482, 141, 503, "Output",
+ CellID->537831788],
+Cell[64207, 1360, 7546, 143, 503, "Output",
+ CellID->56975501]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[71790, 1508, 26, 0, 332, "DetailsSection"],
+Cell[71819, 1510, 290, 5, 22, "DetailNotes",
+ CellID->612497641],
+Cell[72112, 1517, 446, 11, 53, "DetailNotes",
+ CellID->49290722],
+Cell[72561, 1530, 607, 18, 38, "DetailNotes",
+ CellID->467811837],
+Cell[73171, 1550, 641, 18, 39, "DetailNotes",
+ CellID->216404523],
+Cell[73815, 1570, 658, 20, 38, "DetailNotes",
+ CellID->2888771],
+Cell[74476, 1592, 766, 17, 52, "DetailNotes",
+ CellID->1008292026]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[75279, 1614, 57, 1, 120, "ControlSuggestionsSection",
+ CellID->146334000],
+Cell[75339, 1617, 433, 11, 22, "ControlSuggestions",
+ CellTags->"SliderZoom",
+ CellID->566762185],
+Cell[75775, 1630, 277, 8, 22, "ControlSuggestions",
+ CellTags->"DragLocators",
+ CellID->1482068850],
+Cell[76055, 1640, 446, 10, 22, "ControlSuggestions",
+ CellTags->"RotateAndZoomIn3D",
+ CellID->468340397],
+Cell[76504, 1652, 397, 10, 22, "ControlSuggestions",
+ CellTags->"AutomaticAnimation",
+ CellID->869486124],
+Cell[76904, 1664, 308, 9, 22, "ControlSuggestions",
+ CellTags->"GamepadControls",
+ CellID->1974551880],
+Cell[77215, 1675, 271, 8, 22, "ControlSuggestions",
+ CellTags->"ResizeImages",
+ CellID->1228650069],
+Cell[77489, 1685, 313, 9, 22, "ControlSuggestions",
+ CellTags->"BookmarkAnimation",
+ CellID->1866443778]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[77839, 1699, 30, 0, 152, "SearchTermsSection"],
+Cell[77872, 1701, 198, 4, 22, "SearchTerms",
+ CellID->9620120],
+Cell[78073, 1707, 188, 4, 22, "SearchTerms",
+ CellID->245912470],
+Cell[78264, 1713, 200, 4, 22, "SearchTerms",
+ CellID->316166559],
+Cell[78467, 1719, 195, 4, 22, "SearchTerms",
+ CellID->137963802]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[78699, 1728, 31, 0, 138, "RelatedLinksSection"],
+Cell[78733, 1730, 261, 6, 22, "RelatedLinks",
+ CellID->881522522]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[79031, 1741, 25, 0, 136, "AuthorSection"],
+Cell[79059, 1743, 558, 14, 22, "Author",
+ CellID->95413255]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
